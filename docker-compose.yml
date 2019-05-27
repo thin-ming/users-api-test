@@ -1,0 +1,29 @@
+version: '3.7'
+
+services: 
+  mongodb:
+    container_name: mongodb
+    image: mongo:4
+    environment:
+      - MONGO_INITDB_DATABASE=users
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    ports:
+        - 27017:27017
+  
+  mongoclient:
+    container_name: mongoclient
+    image: mongoclient/mongoclient:latest
+    ports:
+        - 3000:3000
+    links:
+      - mongodb
+
+  webserver: 
+    container_name: webserver
+    build: .
+    image: webserver
+    ports:
+      - "5000:5000"
+    links:
+      - mongodb
